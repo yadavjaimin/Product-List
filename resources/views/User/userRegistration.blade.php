@@ -41,6 +41,7 @@
                 <button type="submit" class="btn">Register</button>
                 <a class="btn btn-secondary">Cancel</a>
             </div>
+            <a href="login"  class="login-link">Login ?</a>
         </form>
     </div>
 </body>

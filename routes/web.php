@@ -4,11 +4,12 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-
+//Registration
 
 Route::view('user','User.userRegistration');
 Route::post('userRegistration',[UserController::class,'userRegistration']);
 
+//login
 Route::view('login','User.userLogin');
 Route::post('userLogin',[UserController::class,'userLogin']);
 
@@ -16,6 +17,11 @@ Route::post('userLogin',[UserController::class,'userLogin']);
 Route::view('add','Product.addProduct');
 Route::post('addProduct',[UserController::class,'addProduct']);
 
+//list
 Route::get('dataList',[UserController::class,'dataList']);
 
- Route::view('display','displayProduct');
+Route::view('displayProduct','Product.displayProduct');
+
+//delete product
+
+Route::get('deleteProduct/{id}',[UserController::class,'deleteProduct']);
