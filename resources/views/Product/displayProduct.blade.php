@@ -6,8 +6,29 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <title>Product Table</title>
   <link rel="stylesheet" href="css/displayProduct.css">
+
+
+  <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Check for flash message
+            const successMessage = document.getElementById("success-message");
+            if (successMessage) {
+                alert(successMessage.textContent);
+            }
+        });
+    </script>
+
 </head>
 <body>
+
+
+<!-- Flash message (hidden by default) -->
+@if(session('success'))
+        <div id="success-message" style="display: none;">
+            {{ session('success') }}
+        </div>
+        @endif
+
 
   <div class="container">
     <h2 class="text-center my-4">Product Table</h2>

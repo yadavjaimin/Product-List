@@ -1,68 +1,94 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\product;
 use App\Models\User;
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\facades\Validator;
 use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
 
     function userRegistration(Request $request)
     {
-
-        info('new user adata',[$request->all()]);
-      $newStudentData=  $request->validate([
+      $NewUserData=  $request->validate([
             "name" => 'required|min:3 |max:12',
             "email" => 'required|email',
             "password" => 'required|min:6|max:12'
 
         ]);
+//1
+$StoreData=User::create( $NewUserData);
 
-$Datas=User::create($newStudentData);
-
+//2-another method to store data in database
         // $user = new User();
         // $user->name = $request->name;
         // $user->email = $request->email;
-
         // $user->password = $request->password;
 
-
-    
-     if($Datas->save()) {
+        if ($StoreData->save()) {
             return view('User.userLogin');
         } else {
             return "User Are Not Inserteded";
-        }
-    }   
-
-    
-
-
-function userLogin(Request $request)
-    {
-        $userInput = $request->input();
-
-        //Find the user by email
-        $registeredUser = User::where('email', $userInput['email'])->first();
-
-        if ($registeredUser && Hash::check($userInput['password'], $registeredUser->password)) {
-            return redirect('add');
-        } else {
-            return "Not Logged In";
         }
     }
 
 
 
-    function addProduct(Request $request)
-
-
+    function userLogin(Request $request)
     {
 
-        info("products",[$request->all()]);
+        // info("userlogin",[$request->all()]);
+
+        // $userInput = $request->input();
+
+        // // Find the user by email
+        // $registeredUser = User::where('email', $userInput['email'])->first();
+
+        // $cheked=$registeredUser && Hash::check($userInput['password'], $registeredUser->password);
+
+        // if ($cheked) {
+        //     return redirect('add');
+        // } else {
+        //     return "Not Logged In";
+        // }
+
+ 
+        $newuUserData=  $request->validate([
+            // "name" => 'required|min:3 |max:12',
+            "email" => 'required|email',
+            "password" => 'required|min:6|max:12'
+
+        ]);
+// info("validatd",[$newuUserData]);
+
+        if (Auth::attempt($newuUserData)) {
+            // info("authenticate",[Auth::user()]);
+            return redirect('add');
+        } else {
+
+            // info("registration fail");
+            return " Registration fail";
+
+        }
+
+
+
+     }
+    }
+
+
+
+    function addProduct(Request $request)
+    {
+
+        // info("product",[$request->all()]);
+
         $request->validate([
             'productTitle' => 'required',
             'productPrice' => 'required|numeric',
@@ -71,7 +97,6 @@ function userLogin(Request $request)
 
         //Store user request in database
         $Products = new product();
-
         $Products->productTitle = $request->productTitle;
         $Products->productPrice = $request->productPrice;
         $Products->productNotes = $request->productNotes;
@@ -97,17 +122,17 @@ function userLogin(Request $request)
     }
 
 
+//delete product
 
     function deleteProduct($id){
-
 
   $Product=product::destroy($id);
 
   if($Product){
-    return redirect('dataList');
+    return redirect()->back()->with('success', 'product deleted');
+    // return redirect('dataList');
   }else{
     echo"not";
   }
 
     }
-}
